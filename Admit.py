@@ -178,12 +178,12 @@ def dispaly():
     column 4 --> Research (0 -> No ; 1 -> Yes)
     column 5 --> Paper Presented (upto n numbers {a person can publish or present n number of papaers})
     '''''
-
-    if (chance[0][0]<=5) and (chance[0][1]<=5) and (chance[0][2]<=5): # To check if we gave the correct method of input 
+    # To check if we gave the correct method of input 
+    if (abs(chance[0][0])<=5) and (abs(chance[0][1])<=5) and (abs(chance[0][2])<=5): # Won't accept negative value as input
         if chance[0][3]<=1:
-            pre = lr.predict(chance)
-            for i in pre:
-                if (i*100).round(2) < 70:
+            pre = lr.predict(chance) # Predicting the chance of acceptance
+            for i in pre: # Iterating through loop, which comes out of a list
+                if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
                     print('Candiate not Selected')
                 elif (i*100).round(2) > 100:
                     print('You are over qualified.')
