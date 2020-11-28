@@ -1,12 +1,15 @@
-import tkinter 
 from tkinter import *
 
-# Designing the main window
-top = tkinter.Tk()
+def callback():
+    print('You clicked the button!')
 
-# Name Input feild 
-Label(top, text='First Name').grid(row=0) 
-name = Entry(top)
-name.grid(row=0, column=1)
+top = Tk()
+L1 = Label(top, text="Student Name")
+L1.grid(row=0, column=0)
+E1 = Entry(top, bd = 5)
+E1.grid(row=0, column=1)
+
+MyButton1 = Button(top, text="Submit", width=10, command=callback)
+MyButton1.grid(row=1, column=1)
 
 top.mainloop()
