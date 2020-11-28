@@ -24,6 +24,7 @@ def callback(): # Fuction for getting callback from user input.
     print("Department:", e2.get())
     print("University:", e3.get())
     print ("Ah shit here we go again!!")
+    
 MyButton1 = Button(root, text="Submit", width=10, command=callback)
 MyButton1.grid(row=16, column=0)
 
