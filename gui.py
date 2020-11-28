@@ -6,15 +6,15 @@ from tkinter.ttk import *
 root = tk.Tk()
 v = tk.IntVar()
 
-tk.Label(root, text="Full Name").grid(row=0, column = 0)
+tk.Label(root, text="Full Name",fg='red').grid(row=0, column = 0)
 e1 = tk.Entry(root)
 e1.grid(row=0, column = 1)
 
-tk.Label(root, text="Deaprtment").grid(row=1, column = 0)
+tk.Label(root, text="Deaprtment",fg='red').grid(row=1, column = 0)
 e2 = tk.Entry(root)
 e2.grid(row=1, column = 1)
 
-tk.Label(root, text="University").grid(row=2, column = 0)
+tk.Label(root, text="University",fg='red').grid(row=2, column = 0)
 e3 = tk.Entry(root)
 e3.grid(row=2, column = 1)
 
