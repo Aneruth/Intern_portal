@@ -25,14 +25,21 @@ def callback(): # Fuction for getting callback from user input.
     print("University:", e3.get())
     print ("Ah shit here we go again!!")
 
+def res():
+    e1.delete(0,END)
+    e2.delete(0,END)
+    e3.delete(0,END)
+    print('\n')
+
+command= lambda: [f() for f in [callback, res]]
+
 # Close button 
 def close_window(): 
     root.destroy()
 
 button = Button (root, text = "Good-bye.", command = close_window)
 button.grid(row=16, column=10)
-    
-MyButton1 = Button(root, text="Submit", width=10, command=callback)
+MyButton1 = Button(root, text="Submit", width=10, command=command)
 MyButton1.grid(row=16, column=0)
 
 root.mainloop()
