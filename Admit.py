@@ -1,5 +1,7 @@
 # Importing the required package
 import random
+from numpy.core.fromnumeric import sort
+from numpy.lib.function_base import append
 import pandas as pd 
 
 # For data visualisation
@@ -15,16 +17,16 @@ from sklearn.linear_model import LinearRegression
 # Defining the student class
 class Student:
     
-    def __init__(self,name,dept,email,university,skillset): # <---- Constructor
+    def __init__(self,name,dept,email,university,chance): # <---- Constructor
         self.name = name
         self.dept = dept
         self.email = email
         self.university = university
-        self.skillset = skillset
+        self.chance = chance
         self.choice = {}
     
     def get(self):
-        return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Skill set':self.skillset}
+        return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Chance':self.chance,'Choice':self.choice}
     
     def chooseIntern(self,company):
         comp = company.get()
@@ -39,23 +41,33 @@ class University:
     def __init__(self,name):
         self.name = name
         self.student_list = []
+        self.sort_stu = {'Accepted':{},'Waiting':{}}
     
     def addStudent(self,student):
         self.student_list.append(student)
     
     def get(self):
         return {"University Name" : self.name,'Student List' : [i.get() for i in self.student_list]}
+    
+    def sort_students(self):
+        for i in self.student_list:
+            stu = i.get()
+            if stu['Choice']['Status'] == 'Waiting':
+                if isinstance(self.sort_stu['Waiting'][stu['Choice']['Name']],list):
+                        self.sort_stu['Waiting'][stu['Choice']['Name']] = []
+                self.sort_stu['Waiting'][stu['Choice']['Name']].append(i) # Adding Student to the company list inside the waiting list
+        print(self.sort_stu)
 
 # Accessing the job portal
 
 class Intern:
-    def __init__(self,desc,skill,level):
+    def __init__(self,desc,threshold):
         self.desc = desc
-        self.skill = skill
-        self.level = level
+        self.threshold = threshold 
+        
     
     def get(self):
-        return {'desc':self.desc,'skill':self.skill,'Level':self.level}
+        return {'desc':self.desc,'Threshold':self.threshold}
 
 class Company:
     # Getting the song object and placing it in album array 
@@ -90,7 +102,7 @@ class Portal:
             
         return temp
 
-# Predicting the model we upload
+######################################### Machine Learning Model
 
 df = pd.read_csv('/Users/aneruthmohanasundaram/Documents/VUB/1/Advanced Programming Concepts /Project/accept.csv')
 df.head()
@@ -118,8 +130,8 @@ pre = lr.predict(X_test)
 def dispaly():
     
     # Calling the student class
-    student_1 = Student('Aneruth','MACS','ane1998@gmail.com','VUB',{'C' : 'Master','Python' : 'Intermediate'})
-    student_2 = Student('Arun Daniel','MACS','arundanielk@gmail.com','VUB',{'C' : 'Intermediate','Python' : 'Master', 'Full stack' : 'Master'})
+    student_1 = Student('Aneruth','MACS','ane1998@gmail.com','VUB',[[23.5,7.5,5,1,0]])
+    student_2 = Student('Arun Daniel','MACS','arundanielk@gmail.com','VUB',[[3.5,2.5,5,1,0]])
     # print(student_1.get())
     # print(student_2.get())
 
@@ -129,18 +141,18 @@ def dispaly():
     uni = University('Virje University of Brussels')
 
     uni.addStudent(student_1)
-    # uni.addStudent(student_2)
+    uni.addStudent(student_2)
     show = uni.get()
-    print(show)
+    # print(show)
 
     # print('\n')
 
     # Creating a job portal
-    job_1 = Intern('SDE','Python','Intermediate')
-    job_2 = Intern('Back End Dev','Java','Master')
-    job_3 = Intern('Senior Full Stack Dev','Full stack','Master')
-    job_4 = Intern('Junior Full Stack Dev','C','Master')
-    job_5 = Intern('Data Scientist Associate','Machine Learning','Beginner')
+    job_1 = Intern('SDE',80)
+    job_2 = Intern('Back End Dev',75)
+    job_3 = Intern('Senior Full Stack Dev',90)
+    job_4 = Intern('Junior Full Stack Dev',69)
+    job_5 = Intern('Data Scientist Associate',88)
 
     # Assigning the job to a company
     company_1 = Company('Amazon')
@@ -159,39 +171,40 @@ def dispaly():
     p = Portal()
     p.addComapany(company_1)
     p.addComapany(company_2)
-    for k in p.getOffers():
-        print(k,(p.getOffers()[k]),end='\n\n')
+    # for k in p.getOffers():
+    #     print(k,(p.getOffers()[k]),end='\n\n')
 
     # Student Choice
     student_1.chooseIntern(company_1)
-    # student_2.chooseIntern(company_2)
+    student_2.chooseIntern(company_1)
+    uni.sort_students()
 
     print('\n')
 
     # Chance of accepting the offer based on our model
-    chance = [[23.5,7.5,5,1,0]] # We can change this number based on user input. By default the ML model accepts only in 2D array.
+    # # chance = [[23.5,7.5,5,1,0]] # We can change this number based on user input. By default the ML model accepts only in 2D array.
     
-    ''''
-    column 1 --> University Score (total out of 5)
-    column 2 --> Round 1 score (total out of 5)
-    column 3 --> Round 2 score (total out of 5)
-    column 4 --> Research (0 -> No ; 1 -> Yes)
-    column 5 --> Paper Presented (upto n numbers {a person can publish or present n number of papaers})
-    '''''
-    # To check if we gave the correct method of input 
-    if (abs(chance[0][0])<=5) and (abs(chance[0][1])<=5) and (abs(chance[0][2])<=5): # Won't accept negative value as input
-        if chance[0][3]<=1:
-            pre = lr.predict(chance) # Predicting the chance of acceptance
-            for i in pre: # Iterating through loop, which comes out of a list
-                if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
-                    print('Candiate not Selected')
-                elif (i*100).round(2) > 100:
-                    print('You are over qualified.')
-                else:
-                    print(f'You are selected with {(i*100).round(2)}%')
-        else:
-            print('Wrong Input')
-    else:
-            print('Wrong Input')
+    # ''''
+    # column 1 --> University Score (total out of 5)
+    # column 2 --> Round 1 score (total out of 5)
+    # column 3 --> Round 2 score (total out of 5)
+    # column 4 --> Research (0 -> No ; 1 -> Yes)
+    # column 5 --> Paper Presented (upto n numbers {a person can publish or present n number of papaers})
+    # '''''
+    # # To check if we gave the correct method of input 
+    # if (abs(chance[0][0])<=5) and (abs(chance[0][1])<=5) and (abs(chance[0][2])<=5): # Won't accept negative value as input
+    #     if chance[0][3]<=1:
+    #         pre = lr.predict(chance) # Predicting the chance of acceptance
+    #         for i in pre: # Iterating through loop, which comes out of a list
+    #             if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
+    #                 print('Candiate not Selected')
+    #             elif (i*100).round(2) > 100:
+    #                 print('You are over qualified.')
+    #             else:
+    #                 print(f'You are selected with {(i*100).round(2)}%')
+    #     else:
+    #         print('Wrong Input')
+    # else:
+    #         print('Wrong Input')
 
 dispaly()
