@@ -33,7 +33,7 @@ class Student:
         self.choice['Name'] = comp['Name']
         self.choice['Offer'] = random.choice(comp['Offers'])
         self.choice['Status'] = 'Waiting'
-        print(self.choice)
+        # print(self.choice)
 
 # Defining the university class
 
@@ -63,7 +63,7 @@ class University:
                 if self.sort_stu['Accepted'].get(stu['Choice']['Name']) == None:
                     self.sort_stu['Accepted'][stu['Choice']['Name']] = []
                 self.sort_stu['Accepted'][stu['Choice']['Name']].append(i) # Adding Student to the company list inside the Accepted list
-        print(self.sort_stu)
+       # print(self.sort_stu)
 
 # Accessing the job portal
 
@@ -93,27 +93,27 @@ class Company:
         return temp
     
     def accept_intern(self,university):
-        stu_list = university.sort_stu
-        # print(stu_list)
-        for i in stu_list['Waiting'][self.company_name]:
+        stu_list = university.sort_stu['Waiting'][self.company_name][:]
+        # print(stu_list['Waiting'][self.company_name])
+        for i in stu_list:
             stu = i.get()
             threshold = stu['Choice']['Offer']['Threshold']
             chance = stu['Chance']
-            
+
             pre = lr.predict(chance) # Predicting the chance of acceptance
-            for j in pre: # Iterating through loop, which comes out of a list
-                # print(stu_list['Waiting'][self.company_name])
-                print(j)
-                if (j*100).round(2) < threshold: # To check if the candidate secured more than 70 
-                    stu_list['Waiting'][self.company_name].remove(i)
-                elif (j*100).round(2) > 100:
-                    stu_list['Waiting'][self.company_name].remove(i)
-                else:
-                    stu_list['Waiting'][self.company_name].remove(i)
-                    if stu_list['Accepted'].get(stu[self.company_name]) == None:
-                        stu_list['Accepted'][stu[self.company_name]] = [] 
-                    stu_list['Accepted'][stu[self.company_name]].append(i) # Adding Student to the company list inside the Accepted list
-                    # print(f'You are selected with {(i*100).round(2)}%')
+            # # for j in pre: # Iterating through loop, which comes out of a list
+            #     # print(stu_list['Waiting'][self.company_name])
+            #     # print(j)
+            if (pre[0]*100).round(2) < threshold: # To check if the candidate secured more than 70 
+                university.sort_stu['Waiting'][self.company_name].remove(i)
+            elif (pre[0]*100).round(2) > 100:
+                university.sort_stu['Waiting'][self.company_name].remove(i)
+            else:
+                university.sort_stu['Waiting'][self.company_name].remove(i)
+                if university.sort_stu['Accepted'].get(self.company_name) == None:
+                    university.sort_stu['Accepted'][self.company_name] = [] 
+                university.sort_stu['Accepted'][self.company_name].append(i) # Adding Student to the company list inside the Accepted list
+            #     # print(f'You are selected with {(i*100).round(2)}%')
 class Portal:
     def __init__(self):
         self.portal = []
@@ -210,6 +210,8 @@ def dispaly():
     company_1.accept_intern(uni)
     uni.get_sort()
     print('\n')
+    # company_1.accept_intern(uni)
+    # uni.get_sort()
 
     # Chance of accepting the offer based on our model
     # # chance = [[23.5,7.5,5,1,0]] # We can change this number based on user input. By default the ML model accepts only in 2D array.
