@@ -54,6 +54,7 @@ def callback(): # Fuction for getting callback from user input.
     print("Department:", e2.get())
     print("University:", e3.get())
     # print('Score:',e4.get())
+    # Printing the random values for the 5 collumns based on our csv file
     a = randint(0,5)
     b = randint(0,5)
     c = randint(0,5)
@@ -65,7 +66,7 @@ def callback(): # Fuction for getting callback from user input.
             pre = lr.predict(values) # Predicting the chance of acceptance
             for i in pre: # Iterating through loop, which comes out of a list
                 if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
-                    print('Candiate not Selected')
+                    print(f'Candiate not Selected with {(i*100).round(2)}%')
                 elif (i*100).round(2) > 100:
                     print('You are over qualified.')
                 else:
