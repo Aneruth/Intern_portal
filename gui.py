@@ -20,9 +20,9 @@ Label(root, text="University",fg='red').grid(row=2, column = 0)
 e3 = Entry(root)
 e3.grid(row=2, column = 1)
 
-# Label(root, text="Score",fg='red').grid(row=3, column = 0)
-# e4 = Entry(root)
-# e4.grid(row=3, column = 1)
+Label(root, text="Score (comma separated)",fg='red').grid(row=3, column = 0)
+e4 = Entry(root)
+e4.grid(row=3, column = 1)
 
 ''''
 Machine Learning Model
@@ -54,13 +54,10 @@ def callback(): # Fuction for getting callback from user input.
     print("Department:", e2.get())
     print("University:", e3.get())
     # print('Score:',e4.get())
-    # Printing the random values for the 5 collumns based on our csv file
-    a = randint(0,5)
-    b = randint(0,5)
-    c = randint(0,5)
-    d = randint(0,1)
-    e = randint(0,15)
-    values = [[a,b,c,d,e]]
+    values =e4.get()
+    values = list(map(float,values.split(",")))
+    values=[values]
+    
     if (abs(values[0][0])<=5) and (abs(values[0][1])<=5) and (abs(values[0][2])<=5): # Won't accept negative value as input
         if values[0][3]<=1:
             pre = lr.predict(values) # Predicting the chance of acceptance
@@ -82,7 +79,7 @@ def res():
     e1.delete(0,END)
     e2.delete(0,END)
     e3.delete(0,END)
-    # e4.delete(0,END)
+    e4.delete(0,END)
 
 
 # Close button 
