@@ -88,7 +88,7 @@ def callback(): # Fuction for getting callback from user input.
     aList = list(map(float,aList))
     aList=[aList]
     print('Acceptance Mark:',aList)
-    if (abs(aList[0][0])<=5) and (abs(aList[0][1])<=5) and (abs(aList[0][2])<=5): # Won't accept negative value as input
+    if (aList[0][0])<=5 and (aList[0][1])<=5 and (aList[0][2])<=5: # Won't accept negative value as input
         if aList[0][3]<=1:
             pre = lr.predict(aList) # Predicting the chance of acceptance
             for i in pre: # Iterating through loop, which comes out of a list
