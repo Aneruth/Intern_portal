@@ -1,8 +1,7 @@
 import pandas as pd 
 
 from tkinter import *
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from Admit import *
 
 root = Tk()
 v = IntVar()
@@ -40,28 +39,6 @@ Label(root, text="Paper Presented",fg='red').grid(row=7, column = 0)
 e8 = Entry(root)
 e8.grid(row=7, column = 1)
 
-#################################### Machine Learning Model Starts ####################################
-df = pd.read_csv('/Users/aneruthmohanasundaram/Documents/VUB/1/Advanced Programming Concepts /Project/accept.csv')
-df.head()
-# Removing the unwanted column in dataset
-df = df.drop('Serial No.',axis=1)
-
-# Performing Train test split method to train and test the data 
-X = df[['University Score', 'Round 1', 'Round 2 ', 'Research','Paper Presented']]
-y= df['Chance of Admit ']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=101)
-# test_size --> Spliting the test size as 60:40 ratio for train and test of our given dataset.abs
-# random_state --> It'll decide the splitting of data into train and test indices in our case.(The number can be randomly described.)
-
-# Intialising the model for our project
-lr = LinearRegression()
-
-# Model Fiting 
-fit = lr.fit(X_train,y_train)
-
-# Model Predicting
-pre = lr.predict(X_test)
-#################################### Machine Learning Model Ends ####################################
 ''''
     column 1 --> University Score (total out of 5)
     column 2 --> Round 1 score (total out of 5)
