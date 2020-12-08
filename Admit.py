@@ -229,4 +229,5 @@ def dispaly():
     uni.get_sort()
     print('\n')
     print(student_1.get())
+    print('\n')
 dispaly()
