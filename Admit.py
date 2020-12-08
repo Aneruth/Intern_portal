@@ -28,6 +28,7 @@ class Student:
     def get(self):
         return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Chance':self.chance,'Choice':self.choice}
     
+
     def chooseIntern(self,company):
         comp = company.get()
         self.choice['Name'] = comp['Name']
@@ -50,7 +51,16 @@ class University:
         return {"University Name" : self.name,'Student List' : [i.get() for i in self.student_list]}
     
     def get_sort(self):
-        print(self.sort_stu)
+        # print(self.sort_stu)
+        temp = {}
+        for i in self.sort_stu:
+            temp[i] = {}
+            for j in self.sort_stu[i]:
+                temp[i][j] = []
+                for k in self.sort_stu[i][j]:
+                    temp[i][j].append(k.get())
+        print(temp)
+            
     
     def sort_students(self):
         for i in self.student_list:
@@ -81,7 +91,7 @@ class Company:
     def __init__(self,company_name):
         self.company_name = company_name
         self.offer = [] 
-    
+
     # Append a song to the album array
     def addIntern(self,intern):
         self.offer.append(intern)
@@ -93,27 +103,32 @@ class Company:
         return temp
     
     def accept_intern(self,university):
-        stu_list = university.sort_stu['Waiting'][self.company_name][:]
-        # print(stu_list['Waiting'][self.company_name])
-        for i in stu_list:
-            stu = i.get()
-            threshold = stu['Choice']['Offer']['Threshold']
-            chance = stu['Chance']
+        if self.company_name in university.sort_stu['Waiting']:
+            stu_list = university.sort_stu['Waiting'][self.company_name][:]
+            # print(stu_list['Waiting'][self.company_name])
+            for i in stu_list:
+                stu = i.get()
+                threshold = stu['Choice']['Offer']['Threshold']
+                chance = stu['Chance']
 
-            pre = lr.predict(chance) # Predicting the chance of acceptance
-            # # for j in pre: # Iterating through loop, which comes out of a list
-            #     # print(stu_list['Waiting'][self.company_name])
-            #     # print(j)
-            if (pre[0]*100).round(2) < threshold: # To check if the candidate secured more than 70 
-                university.sort_stu['Waiting'][self.company_name].remove(i)
-            elif (pre[0]*100).round(2) > 100:
-                university.sort_stu['Waiting'][self.company_name].remove(i)
-            else:
-                university.sort_stu['Waiting'][self.company_name].remove(i)
-                if university.sort_stu['Accepted'].get(self.company_name) == None:
-                    university.sort_stu['Accepted'][self.company_name] = [] 
-                university.sort_stu['Accepted'][self.company_name].append(i) # Adding Student to the company list inside the Accepted list
-            #     # print(f'You are selected with {(i*100).round(2)}%')
+                pre = lr.predict(chance) # Predicting the chance of acceptance
+                # # for j in pre: # Iterating through loop, which comes out of a list
+                #     # print(stu_list['Waiting'][self.company_name])
+                #     # print(j)
+                if (pre[0]*100).round(2) < threshold: # To check if the candidate secured more than 70 
+                    stu['Choice']['Status'] = 'Rejected'
+                    university.sort_stu['Waiting'][self.company_name].remove(i)
+                elif (pre[0]*100).round(2) > 100:
+                    stu['Choice']['Status'] = 'Rejected'
+                    university.sort_stu['Waiting'][self.company_name].remove(i)
+                else:
+                    stu['Choice']['Status'] = 'Accepted'
+                    university.sort_stu['Waiting'][self.company_name].remove(i)
+                    if university.sort_stu['Accepted'].get(self.company_name) == None:
+                        university.sort_stu['Accepted'][self.company_name] = [] 
+                    university.sort_stu['Accepted'][self.company_name].append(i) # Adding Student to the company list inside the Accepted list
+                #     # print(f'You are selected with {(i*100).round(2)}%')
+
 class Portal:
     def __init__(self):
         self.portal = []
@@ -131,8 +146,7 @@ class Portal:
             
         return temp
 
-######################################### Machine Learning Model
-
+######################################### Machine Learning Model Starts 
 df = pd.read_csv('/Users/aneruthmohanasundaram/Documents/VUB/1/Advanced Programming Concepts /Project/accept.csv')
 df.head()
 # Removing the unwanted column in dataset
@@ -153,14 +167,15 @@ fit = lr.fit(X_train,y_train)
 
 # Model Predicting
 pre = lr.predict(X_test)
+######################################### Machine Learning Model Ends 
 
 # Function to display all the result 
 
 def dispaly():
     
     # Calling the student class
-    student_1 = Student('Aneruth','MACS','ane1998@gmail.com','VUB',[[23.5,7.5,5,1,0]])
-    student_2 = Student('Arun Daniel','MACS','arundanielk@gmail.com','VUB',[[3.5,2.5,5,1,0]])
+    student_1 = Student('Aneruth','MACS','ane1998@gmail.com','VUB',[[23.5,4.5,3.5,1,0]])
+    student_2 = Student('Abhisheik KTR','MACS','sachikn.ravikanth10@gmail.com','VUB',[[3.5,2.5,5,1,3]])
     # print(student_1.get())
     # print(student_2.get())
 
@@ -174,7 +189,7 @@ def dispaly():
     show = uni.get()
     # print(show)
 
-    # print('\n')
+    print('\n')
 
     # Creating a job portal
     job_1 = Intern('SDE',80)
@@ -187,7 +202,6 @@ def dispaly():
     company_1 = Company('Amazon')
     company_1.addIntern(job_1)
     company_1.addIntern(job_2)
-    # print(c.get())
 
     print('\n')
 
@@ -195,6 +209,7 @@ def dispaly():
     company_2.addIntern(job_3)
     company_2.addIntern(job_4)
     company_2.addIntern(job_5)
+    # print(f'Offers currently in {__name__}','\n',company_2.get())
 
     # Portsal class
     p = Portal()
@@ -205,38 +220,13 @@ def dispaly():
 
     # Student Choice
     student_1.chooseIntern(company_1)
-    student_2.chooseIntern(company_1)
+    student_2.chooseIntern(company_2)
     uni.sort_students()
-    company_1.accept_intern(uni)
     uni.get_sort()
     print('\n')
-    # company_1.accept_intern(uni)
-    # uni.get_sort()
-
-    # Chance of accepting the offer based on our model
-    # # chance = [[23.5,7.5,5,1,0]] # We can change this number based on user input. By default the ML model accepts only in 2D array.
-    
-    # ''''
-    # column 1 --> University Score (total out of 5)
-    # column 2 --> Round 1 score (total out of 5)
-    # column 3 --> Round 2 score (total out of 5)
-    # column 4 --> Research (0 -> No ; 1 -> Yes)
-    # column 5 --> Paper Presented (upto n numbers {a person can publish or present n number of papaers})
-    # '''''
-    # # To check if we gave the correct method of input 
-    # if (abs(chance[0][0])<=5) and (abs(chance[0][1])<=5) and (abs(chance[0][2])<=5): # Won't accept negative value as input
-    #     if chance[0][3]<=1:
-    #         pre = lr.predict(chance) # Predicting the chance of acceptance
-    #         for i in pre: # Iterating through loop, which comes out of a list
-    #             if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
-    #                 print('Candiate not Selected')
-    #             elif (i*100).round(2) > 100:
-    #                 print('You are over qualified.')
-    #             else:
-    #                 print(f'You are selected with {(i*100).round(2)}%')
-    #     else:
-    #         print('Wrong Input')
-    # else:
-    #         print('Wrong Input')
-
+    company_1.accept_intern(uni)
+    company_2.accept_intern(uni)
+    uni.get_sort()
+    print('\n')
+    print(student_1.get())
 dispaly()
