@@ -1,5 +1,5 @@
 from tkinter import *
-from admit import *
+from Admit import *
 
 def dispaly():
     # Calling the student class
