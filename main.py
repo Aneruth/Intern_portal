@@ -1,66 +1,7 @@
 from tkinter import *
 from Admit import *
 
-def dispaly():
-    # Calling the student class
-    student_1 = Student('Aneruth','MACS','ane1998@gmail.com','VUB',[[3.5,4.5,3.5,1,0]])
-    student_2 = Student('Abhisheik KTR','MACS','sachikn.ravikanth10@gmail.com','VUB',[[3.5,2.5,5,1,3]])
-    print(student_1.get())
-    print(student_2.get())
-
-    # Calling the university class
-    uni = University('Virje University of Brussels')
-
-    uni.addStudent(student_1)
-    uni.addStudent(student_2)
-    show = uni.get()
-    # print(show)
-
-    print('\n')
-
-    # Creating a job portal
-    job_1 = Intern('SDE',80)
-    job_2 = Intern('Back End Dev',75)
-    job_3 = Intern('Senior Full Stack Dev',90)
-    job_4 = Intern('Junior Full Stack Dev',69)
-    job_5 = Intern('Data Scientist Associate',88)
-
-    # Assigning the job to a company
-    company_1 = Company('Amazon')
-    company_1.addIntern(job_1)
-    company_1.addIntern(job_2)
-
-    print('\n')
-
-    company_2 = Company('Tesla')
-    company_2.addIntern(job_3)
-    company_2.addIntern(job_4)
-    company_2.addIntern(job_5)
-    # print(f'Offers currently in {__name__}','\n',company_2.get())
-
-    # Portsal class
-    p = Portal()
-    p.addComapany(company_1)
-    p.addComapany(company_2)
-    # for k in p.getOffers():
-    #     print(k,(p.getOffers()[k]),end='\n\n')
-
-    # Student Choice
-    student_1.chooseIntern(company_1)
-    student_2.chooseIntern(company_2)
-    uni.sort_students()
-    uni.get_sort()
-    print('\n')
-    company_1.accept_intern(uni)
-    company_2.accept_intern(uni)
-    uni.get_sort()
-    print('\n')
-    print(student_1.get())
-
-dispaly()
-
 root = Tk()
-v = IntVar()
 
 root.title('Internship Portal')
 Label(root, text="Full Name",fg='red').grid(row=0, column = 0)
@@ -126,21 +67,80 @@ def callback(): # Fuction for getting callback from user input.
     aList = list(map(float,aList))
     aList=[aList]
     print('Acceptance Mark:',aList)
+    # Calling the student class
+    print('List of students present')
+    student_1 = Student(e1.get(),e2.get(),e3.get(),e4.get(),aList)
+    # student_2 = Student(e1.get(),e2.get(),e3.get(),e4.get(),aList)
+    # student_3 = Student(e1.get(),e2.get(),e3.get(),e4.get(),aList)
+    # print(student_1.get())
+    # print(student_2.get())
+
+    # Calling the university class
+    uni = University('Virje University of Brussels')
+    uni.addStudent(student_1)
+    # uni.addStudent(student_2)
+    # uni.addStudent(student_3)
+    # show = uni.get()
+    # # print(show)
+
+    # print('\n')
+
+    # # Creating a job portal
+    job_1 = Intern('SDE',80)
+    job_2 = Intern('Back End Dev',75)
+    job_3 = Intern('Senior Full Stack Dev',90)
+    job_4 = Intern('Junior Full Stack Dev',69)
+    job_5 = Intern('Data Scientist Associate',88)
+
+    # Assigning the job to a company
+    company_1 = Company('Amazon')
+    company_1.addIntern(job_1)
+    company_1.addIntern(job_2)
+
+    # print('\n')
+
+    company_2 = Company('Tesla')
+    company_2.addIntern(job_3)
+    company_2.addIntern(job_4)
+    company_2.addIntern(job_5)
+    print(f'Offers currently in {company_2.__class__.__name__}','\n',company_2.get())
+
+    # Portal class
+    p = Portal()
+    p.addComapany(company_1)
+    p.addComapany(company_2)
+    # # for k in p.getOffers():
+    # #     print(k,(p.getOffers()[k]),end='\n\n')
+
+    # # Student Choice
+    student_1.chooseIntern(company_1)
+    # student_2.chooseIntern(company_2)
+    uni.sort_students()
+    uni.get_sort()
+    # print('\n')
+    company_1.accept_intern(uni)
+    # company_2.accept_intern(uni)
+    uni.get_sort()
+    # print('\n')
+    print(student_1.get())
+    # print(student_2.get())
+
     if (aList[0][0])<=5 and (aList[0][1])<=5 and (aList[0][2])<=5: # Won't accept negative value as input
-        if aList[0][3]<=1:
-            pre = lr.predict(aList) # Predicting the chance of acceptance
-            for i in pre: # Iterating through loop, which comes out of a list
-                if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
-                    print(f'Candiate not Selected with {(i*100).round(2)}%')
-                elif (i*100).round(2) > 100:
-                    print('You are over qualified.')
-                else:
-                    print(f'Selction accuracy is {(i*100).round(2)}%')
-        else:
-            print('Wrong Input')
+            if aList[0][3]<=1:
+                pre = lr.predict(aList) # Predicting the chance of acceptance
+                for i in pre: # Iterating through loop, which comes out of a list
+                    if (i*100).round(2) < 70: # To check if the candidate secured more than 70 
+                        print(f'Candiate not Selected with {(i*100).round(2)}%')
+                    elif (i*100).round(2) > 100:
+                        print('You are over qualified.')
+                    else:
+                        print(f'Selction accuracy is {(i*100).round(2)}%')
+            else:
+                print('Wrong Input')
     else:
         print('Wrong Input')
-    print('\n') # <---- To sepearate the students 
+    print('\n')
+    
 
 def res():
     e1.delete(0,END)
