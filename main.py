@@ -80,8 +80,6 @@ def callback(): # Fuction for getting callback from user input.
     uni.addStudent(student_1)
     # uni.addStudent(student_2)
     # uni.addStudent(student_3)
-    # show = uni.get()
-    # # print(show)
 
     # print('\n')
 
@@ -103,7 +101,6 @@ def callback(): # Fuction for getting callback from user input.
     company_2.addIntern(job_3)
     company_2.addIntern(job_4)
     company_2.addIntern(job_5)
-    print(f'Offers currently in {company_2.__class__.__name__}','\n',company_2.get())
 
     # Portal class
     p = Portal()
@@ -124,6 +121,8 @@ def callback(): # Fuction for getting callback from user input.
     # print('\n')
     print(student_1.get())
     # print(student_2.get())
+    show = uni.get()
+    print(show)
 
     if (aList[0][0])<=5 and (aList[0][1])<=5 and (aList[0][2])<=5: # Won't accept negative value as input
             if aList[0][3]<=1:
