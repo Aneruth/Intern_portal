@@ -1,7 +1,4 @@
-# Importing the required package
 import random
-from numpy.core.fromnumeric import sort
-from numpy.lib.function_base import append
 import pandas as pd 
 
 # For data visualisation
@@ -30,9 +27,10 @@ class Student:
     
 
     def chooseIntern(self,company):
+        # This snipet is used to assign the students a random companies for the intern offers. 
         comp = company.get()
         self.choice['Name'] = comp['Name']
-        self.choice['Offer'] = random.choice(comp['Offers'])
+        self.choice['Offer'] = random.choice(comp['Offers']) # It makes an random choice of offers for students in student class
         self.choice['Status'] = 'Waiting'
         # print(self.choice)
 
@@ -53,13 +51,13 @@ class University:
     def get_sort(self):
         # print(self.sort_stu)
         temp = {}
-        for i in self.sort_stu:
-            temp[i] = {}
+        for i in self.sort_stu: # Iterates the students based on if the student is in Accepted or in Waiting List
+            temp[i] = {} # After Iterating it saves in dic format 
             for j in self.sort_stu[i]:
                 temp[i][j] = []
                 for k in self.sort_stu[i][j]:
-                    temp[i][j].append(k.get())
-        print(temp)
+                    temp[i][j].append(k.get()) # Appends to the temp[i][j] if the student is accepted or in wait list
+        # print(temp)
             
     
     def sort_students(self):
@@ -155,7 +153,7 @@ df = df.drop('Serial No.',axis=1)
 # Performing Train test split method to train and test the data 
 X = df[['University Score', 'Round 1', 'Round 2 ', 'Research','Paper Presented']]
 y= df['Chance of Admit ']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=101)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 # test_size --> Spliting the test size as 60:40 ratio for train and test of our given dataset.
 # random_state --> It'll decide the splitting of data into train and test indices in our case.(The number can be of our own choice.)
 

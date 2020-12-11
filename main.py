@@ -113,13 +113,13 @@ def callback(): # Fuction for getting callback from user input.
     # #     print(k,(p.getOffers()[k]),end='\n\n')
 
     # # Student Choice
-    student_1.chooseIntern(company_1)
-    # student_2.chooseIntern(company_2)
+    student_1.chooseIntern(company_1) 
+    # student_2.chooseIntern(company_2) 
     uni.sort_students()
     uni.get_sort()
     # print('\n')
     company_1.accept_intern(uni)
-    # company_2.accept_intern(uni)
+    company_2.accept_intern(uni)
     uni.get_sort()
     # print('\n')
     print(student_1.get())
