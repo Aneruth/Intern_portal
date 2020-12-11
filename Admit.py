@@ -134,7 +134,7 @@ class Portal:
         self.portal = []
     
     def addComapany(self,company):
-        self.portal.append(company)
+        self.portal.append(company) # add's company to my portals list whenever we initiate or call a new company class
 
     def getOffers(self):
         temp = {}
@@ -156,8 +156,8 @@ df = df.drop('Serial No.',axis=1)
 X = df[['University Score', 'Round 1', 'Round 2 ', 'Research','Paper Presented']]
 y= df['Chance of Admit ']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=101)
-# test_size --> Spliting the test size as 60:40 ratio for train and test of our given dataset.abs
-# random_state --> It'll decide the splitting of data into train and test indices in our case.(The number can be randomly described.)
+# test_size --> Spliting the test size as 60:40 ratio for train and test of our given dataset.
+# random_state --> It'll decide the splitting of data into train and test indices in our case.(The number can be of our own choice.)
 
 # Intialising the model for our project
 lr = LinearRegression()
