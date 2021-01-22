@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.constants import END
 from Admit import *
 
 class internship_portal(tk.Tk):
@@ -24,46 +25,52 @@ class internship_portal(tk.Tk):
 class IntroPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+    
+        self.student_name = tk.Entry(self,width=30)
+        self.student_name.grid(row=0,column=1,padx=10)
+        self.student_name_label = tk.Label(self,text="Student Name:")
+        self.student_name_label.grid(row=0,column=0)
 
-        student_name = tk.Entry(self,width=30)
-        student_name.grid(row=0,column=1,padx=10)
-        student_name_label = tk.Label(self,text="Student Name:")
-        student_name_label.grid(row=0,column=0)
+        self.university_name = tk.Entry(self,width=30)
+        self.university_name.grid(row=1,column=1,padx=10)
+        self.university_name_label = tk.Label(self,text="University:")
+        self.university_name_label.grid(row=1,column=0)
 
-        university_name = tk.Entry(self,width=30)
-        university_name.grid(row=1,column=1,padx=10)
-        university_name_label = tk.Label(self,text="University:")
-        university_name_label.grid(row=1,column=0)
+        self.department_name = tk.Entry(self,width=30)
+        self.department_name.grid(row=2,column=1,padx=10)
+        self.department_name_label = tk.Label(self,text="Department:")
+        self.department_name_label.grid(row=2,column=0)
 
-        department_name = tk.Entry(self,width=30)
-        department_name.grid(row=2,column=1,padx=10)
-        department_name_label = tk.Label(self,text="Department:")
-        department_name_label.grid(row=2,column=0)
+        self.email_address = tk.Entry(self,width=30)
+        self.email_address.grid(row=3,column=1,padx=10)
+        self.email_address_label = tk.Label(self,text="Email-ID:")
+        self.email_address_label.grid(row=3,column=0)
 
-        email_address = tk.Entry(self,width=30)
-        email_address.grid(row=3,column=1,padx=10)
-        email_address_label = tk.Label(self,text="Email-ID:")
-        email_address_label.grid(row=3,column=0)
-
-        def callback(): # Fuction for getting callback from user input. 
-            print("Student Name:", student_name.get())
-            print("University Name:", university_name.get())
-            print("Department Name:", department_name.get())
-            print("Email Address:", email_address.get())
-        
-        def reset():
-            student_name.delete(0)
-            university_name.delete(0)
-            department_name.delete(0)
-            email_address.delete(0)
-        
-        com = lambda: [f() for f in [callback,reset]] # This merge two functions print and reset the input feild.
+        com = lambda: [f() for f in [self.callback,self.reset]] # This merge two functions print and reset the input feild.
         com2 = lambda: [f1() for f1 in [com,lambda : controller.show_frame(FirstPage)]]
 
         submit_button = tk.Button(self,text="Submit",command=com2)
         submit_button.grid(row=4,column=1)
 
-class FirstPage(tk.Frame,IntroPage()):
+    def callback(self): # Fuction for getting callback from user input. 
+        print("Student Name:", self.student_name.get())
+        print("University Name:", self.university_name.get())
+        print("Department Name:", self.department_name.get())
+        print("Email Address:", self.email_address.get())
+        
+    def reset(self):
+        self.student_name.delete(0,END)
+        self.university_name.delete(0,END)
+        self.department_name.delete(0,END)
+        self.email_address.delete(0,END)
+    
+    def callFunction(self):
+        self.callback()
+
+    def callReset(self):
+        self.reset()    
+
+class FirstPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
 
@@ -110,32 +117,51 @@ class FirstPage(tk.Frame,IntroPage()):
             # print(aList)
 
             class1 = IntroPage(parent,controller)
-            t = class1.callback()
-            # student_1 = Student(student_name.get(),university_name.get(),department_name.get(),email_address.get(),aList)
-            student_1 = Student(t,aList)
-            print(student_1)
+            # student_1 = Student(class1.student_name.get(),class1.university_name.get(),class1.department_name.get(),class1.email_address.get(),aList)
+            student_1 = Student(aList)
+            # student_1 = Student(t,aList)
 
-            # # Creating a job portal
-            # job_1 = Intern('SDE',80)
-            # job_2 = Intern('Back End Dev',75)
-            # job_3 = Intern('Senior Full Stack Dev',90)
-            # job_4 = Intern('Junior Full Stack Dev',69)
-            # job_5 = Intern('Data Scientist Associate',88)
+            # Calling the university class
+            uni = University('Virje University of Brussels')
+            uni.addStudent(student_1)
+
+            
+            # Creating a job portal
+            job_1 = Intern('SDE',80)
+            job_2 = Intern('Back End Dev',75)
+            job_3 = Intern('Senior Full Stack Dev',90)
+            job_4 = Intern('Junior Full Stack Dev',69)
+            job_5 = Intern('Data Scientist Associate',88)
 
             # Assigning the job to a company
-            # company_1 = Company('Amazon')
-            # company_1.addIntern(job_1)
-            # company_1.addIntern(job_2)
+            company_1 = Company('Amazon')
+            company_1.addIntern(job_1)
+            company_1.addIntern(job_2)
 
-            # company_2 = Company('Tesla')
-            # company_2.addIntern(job_3)
-            # company_2.addIntern(job_4)
-            # company_2.addIntern(job_5)
+            company_2 = Company('Tesla')
+            company_2.addIntern(job_3)
+            company_2.addIntern(job_4)
+            company_2.addIntern(job_5)
 
             # Portal class
-            # p = Portal()
-            # p.addComapany(company_1)
-            # p.addComapany(company_2)
+            p = Portal()
+            p.addComapany(company_1)
+            p.addComapany(company_2)
+
+            # # Student Choice
+            student_1.chooseIntern(company_1) 
+            # student_2.chooseIntern(company_2) 
+            uni.sort_students()
+            uni.get_sort()
+            # print('\n')
+            company_1.accept_intern(uni)
+            company_2.accept_intern(uni)
+            uni.get_sort()
+            # print('\n')
+            print(student_1.get())
+            # print(student_2.get())
+            show = uni.get()
+            print(show)
 
             if (aList[0][0])<=5 and (aList[0][1])<=5 and (aList[0][2])<=5: # Won't accept negative value as input
                 if aList[0][3]<=1:

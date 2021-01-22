@@ -14,16 +14,22 @@ from sklearn.linear_model import LinearRegression
 # Defining the student class
 class Student:
     
-    def __init__(self,name,dept,email,university,chance): # <---- Constructor
-        self.name = name
-        self.dept = dept
-        self.email = email
-        self.university = university
+    # def __init__(self,name,dept,email,university,chance): # <---- Constructor
+    #     self.name = name
+    #     self.dept = dept
+    #     self.email = email
+    #     self.university = university
+    #     self.chance = chance
+    #     self.choice = {}
+
+    def __init__(self,chance):
         self.chance = chance
         self.choice = {}
     
+    # def get(self):
+    #     return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Chance':self.chance,'Choice':self.choice}
     def get(self):
-        return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Chance':self.chance,'Choice':self.choice}
+        return {'Chance':self.chance,'Choice':self.choice}
     
 
     def chooseIntern(self,company):
