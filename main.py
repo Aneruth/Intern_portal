@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.constants import END
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from Admit import *
 
 class internship_portal(tk.Tk):
@@ -11,7 +12,7 @@ class internship_portal(tk.Tk):
         block.grid_rowconfigure(0,weight=1)
         block.grid_columnconfigure(0,weight=1)
         self.frames = {}
-        for F in (IntroPage,FirstPage,SecondPage):
+        for F in (IntroPage,FirstPage):
             frame = F(block,self)
             self.frames[F] = frame
             frame.grid(row=0,column=0,sticky="nsew")
@@ -51,6 +52,9 @@ class IntroPage(tk.Frame):
 
         submit_button = tk.Button(self,text="Submit",command=com2)
         submit_button.grid(row=4,column=1)
+
+        exit_button = tk.Button(self,text="Exit",command=self.quit)
+        exit_button.grid(row=4,column=2)
 
     def callback(self): # Fuction for getting callback from user input. 
         print("Student Name:", self.student_name.get())
@@ -119,7 +123,6 @@ class FirstPage(tk.Frame):
             class1 = IntroPage(parent,controller)
             # student_1 = Student(class1.student_name.get(),class1.university_name.get(),class1.department_name.get(),class1.email_address.get(),aList)
             student_1 = Student(aList)
-            # student_1 = Student(t,aList)
 
             # Calling the university class
             uni = University('Virje University of Brussels')
@@ -188,21 +191,53 @@ class FirstPage(tk.Frame):
             paper_pres.delete(0)
         
         com = lambda: [f() for f in [callback,reset]] # This merge two functions print and reset the input feild.
-        com2 = lambda: [f1() for f1 in [com,lambda : controller.show_frame(SecondPage)]]
+        # com2 = lambda: [f1() for f1 in [com,lambda : controller.show_frame(SecondPage)]]
+        com2 = lambda: [f1() for f1 in [com,lambda : controller.show_frame(IntroPage)]]
+        com3 = lambda: [f1() for f1 in [com,com2]]
 
-        previous_button = tk.Button(self,text="Previous",command=lambda: controller.show_frame(IntroPage))
-        previous_button.grid(row=5,column=0)
+        # previous_button = tk.Button(self,text="Previous",command=lambda: controller.show_frame(IntroPage))
+        # previous_button.grid(row=5,column=0)
 
         submit_button = tk.Button(self,text="Submit",command=com2) 
+        submit_button.grid(row=5,column=0)
+
+        submit_button = tk.Button(self,text="Exit",command=self.quit)
         submit_button.grid(row=5,column=1)
 
-    
+
+def create_plot():
+    sns.set(style="white")
+
+    # Set up the matplotlib figure
+    fig, ax = plt.subplots(figsize=(9, 9))
+
+    # Draw the heatmap with the mask and correct aspect ratio
+    plt.title('Data Visualisation for Students points from Round 1 with Research',fontsize=15)
+    sns.histplot(data=df,x='Round 1',hue='Research')
+    return fig
+
+''''    
 class SecondPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
-        
-        submit_button = tk.Button(self,text="Exit",command=self.quit)
-        submit_button.pack()
+        self.fig = create_plot()
+        self.root = lambda:controller.show_frame(SecondPage)
+
+        self.canvas = FigureCanvasTkAgg(self.fig,master=self.root)  # A tk.DrawingArea.
+        self.canvas.show()
+        self.canvas.get_tk_widget().pack()
+        self.submit_button = tk.Button(self,text="Exit",command=self.quit)
+        self.submit_button.pack()
+
+    def create_plot(self):
+        sns.set(style="white")
+
+        # Set up the matplotlib figure
+        plt.figure(figsize=(10,8))
+        # Draw the heatmap with the mask and correct aspect ratio
+        plt.title('Data Visualisation for Students points from Round 1 with Research',fontsize=15)
+        return sns.histplot(data=df,x='Round 1',hue='Research') 
+'''''
 
 app = internship_portal()
 app.mainloop()
