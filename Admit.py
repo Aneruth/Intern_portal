@@ -9,39 +9,23 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
-# %matplotlib inline 
-
 # Defining the student class
 class Student:
-    
-    # def __init__(self,name,dept,email,university,chance): # <---- Constructor
-    #     self.name = name
-    #     self.dept = dept
-    #     self.email = email
-    #     self.university = university
-    #     self.chance = chance
-    #     self.choice = {}
-
     def __init__(self,chance):
         self.chance = chance
         self.choice = {}
     
-    # def get(self):
-    #     return {'Student Name':self.name,'Department':self.dept ,'University':self.university ,'Email':self.email,'Chance':self.chance,'Choice':self.choice}
     def get(self):
         return {'Chance':self.chance,'Choice':self.choice}
     
-
     def chooseIntern(self,company):
         # This snipet is used to assign the students a random companies for the intern offers. 
         comp = company.get()
         self.choice['Name'] = comp['Name']
         self.choice['Offer'] = random.choice(comp['Offers']) # It makes an random choice of offers for students in student class
         self.choice['Status'] = 'Waiting'
-        # print(self.choice)
 
 # Defining the university class
-
 class University:
     def __init__(self,name):
         self.name = name
@@ -63,7 +47,6 @@ class University:
                 temp[i][j] = []
                 for k in self.sort_stu[i][j]:
                     temp[i][j].append(k.get()) # Appends to the temp[i][j] if the student is accepted or in wait list
-        # print(temp)
             
     
     def sort_students(self):
@@ -80,12 +63,10 @@ class University:
        # print(self.sort_stu)
 
 # Accessing the job portal
-
 class Intern:
     def __init__(self,desc,threshold):
         self.desc = desc
         self.threshold = threshold 
-        
     
     def get(self):
         return {'desc':self.desc,'Threshold':self.threshold}
