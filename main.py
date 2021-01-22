@@ -125,7 +125,7 @@ class FirstPage(tk.Frame):
             student_1 = Student(aList)
 
             # Calling the university class
-            uni = University(str(class1.university_name.get()))
+            uni = University('VUB')
             uni.addStudent(student_1)
 
             
