@@ -204,7 +204,7 @@ class FirstPage(tk.Frame):
         submit_button = tk.Button(self,text="Exit",command=self.quit)
         submit_button.grid(row=5,column=1)
 
-
+''''
 def create_plot():
     sns.set(style="white")
 
@@ -216,7 +216,7 @@ def create_plot():
     sns.histplot(data=df,x='Round 1',hue='Research')
     return fig
 
-''''    
+'''''    
 class SecondPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
