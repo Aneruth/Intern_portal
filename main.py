@@ -216,7 +216,7 @@ def create_plot():
     sns.histplot(data=df,x='Round 1',hue='Research')
     return fig
 
-'''''    
+    
 class SecondPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
